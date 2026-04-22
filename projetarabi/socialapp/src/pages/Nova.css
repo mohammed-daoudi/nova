@@ -1,0 +1,432 @@
+.nova-page {
+    min-height: 100vh;
+    background: #1e2130;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.nova-card {
+    width: 100%;
+    max-width: 760px;
+    height: 82vh;
+    background: #252a3d;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+}
+
+/* Header */
+.nova-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    background: #2a2f45;
+    flex-shrink: 0;
+}
+
+.nova-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #534ab7 0%, #7f77dd 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.nova-header-info h2 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #f0f0f8;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nova-badge {
+    background: rgba(127, 119, 221, 0.2);
+    color: #a89ef0;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1px solid rgba(127, 119, 221, 0.3);
+    letter-spacing: 0.05em;
+}
+
+.nova-header-info p {
+    font-size: 12px;
+    color: #43b581;
+    margin: 2px 0 0;
+}
+
+.nova-clear-btn {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: #8b92b8;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.nova-clear-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #f0f0f8;
+}
+
+/* Messages area */
+.nova-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+.nova-messages::-webkit-scrollbar {
+    width: 4px;
+}
+
+.nova-messages::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+/* Welcome screen */
+.nova-welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: 20px;
+    padding: 20px;
+    text-align: center;
+    min-height: 100%;
+}
+
+.nova-glow-ring {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nova-glow-ring::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg,
+            transparent 0deg,
+            rgba(127, 119, 221, 0.8) 60deg,
+            rgba(168, 158, 240, 1) 120deg,
+            rgba(127, 119, 221, 0.8) 180deg,
+            transparent 240deg,
+            rgba(83, 74, 183, 0.4) 300deg,
+            transparent 360deg);
+    animation: spin-ring 3s linear infinite;
+    border-radius: 50%;
+}
+
+.nova-glow-ring::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: #252a3d;
+}
+
+@keyframes spin-ring {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.nova-welcome-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #534ab7 0%, #7f77dd 60%, #afa9ec 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.nova-welcome h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #f0f0f8;
+    margin: 0;
+}
+
+.nova-welcome p {
+    font-size: 14px;
+    color: #6b7299;
+    margin: 0;
+    max-width: 320px;
+    line-height: 1.6;
+}
+
+/* Suggestion grid */
+.nova-suggestions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 100%;
+    max-width: 520px;
+    margin-top: 8px;
+}
+
+.nova-suggestion-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #c0c4de;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    line-height: 1.4;
+    backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.nova-suggestion-btn:hover {
+    background: rgba(127, 119, 221, 0.15);
+    border-color: rgba(127, 119, 221, 0.4);
+    color: #f0f0f8;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(83, 74, 183, 0.2);
+}
+
+.nova-suggestion-icon {
+    font-size: 18px;
+    display: block;
+}
+
+/* Message bubbles */
+.nova-message-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.nova-message-row.user {
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.nova-message-row.user .nova-bubble.user {
+    margin-left: auto;
+}
+
+.nova-message-row.user .nova-bubble.user {
+    margin-left: auto;
+}
+
+.nova-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #534ab7 0%, #7f77dd 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.nova-bubble {
+    max-width: 68%;
+    padding: 10px 14px;
+    font-size: 14px;
+    line-height: 1.6;
+    border-radius: 16px;
+}
+
+.nova-bubble.ai {
+    background: #2f3450;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom-left-radius: 4px;
+    color: #d8daf0;
+}
+
+.nova-bubble.user {
+    background: linear-gradient(135deg, #534ab7 0%, #7f77dd 100%);
+    border-bottom-right-radius: 4px;
+    color: #fff;
+    min-width: 120px;
+    white-space: pre-wrap;
+    text-align: left;
+}
+
+.nova-bubble-time {
+    font-size: 10px;
+    color: #454b6b;
+    margin-top: 4px;
+    padding: 0 2px;
+}
+
+.nova-message-row.user .nova-bubble-time {
+    text-align: right;
+}
+
+/* Typing indicator */
+.nova-typing {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 16px;
+    background: #2f3450;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    border-bottom-left-radius: 4px;
+    width: fit-content;
+}
+
+.nova-typing span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #7f77dd;
+    animation: typing-bounce 1.2s infinite;
+}
+
+.nova-typing span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.nova-typing span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing-bounce {
+
+    0%,
+    60%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.3;
+    }
+
+    30% {
+        transform: translateY(-5px);
+        opacity: 1;
+    }
+}
+
+/* Input area */
+.nova-input-area {
+    padding: 14px 16px;
+    background: #2a2f45;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    flex-shrink: 0;
+}
+
+.nova-input-area textarea {
+    flex: 1;
+    background: #1e2130;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: none;
+    outline: none;
+    min-height: 42px;
+    max-height: 120px;
+    line-height: 1.5;
+    color: #d8daf0;
+    transition: border-color 0.15s;
+}
+
+.nova-input-area textarea::placeholder {
+    color: #454b6b;
+}
+
+.nova-input-area textarea:focus {
+    border-color: rgba(127, 119, 221, 0.5);
+}
+
+.nova-send-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #534ab7 0%, #7f77dd 100%);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: opacity 0.15s, transform 0.1s;
+}
+
+.nova-send-btn:hover {
+    opacity: 0.85;
+}
+
+.nova-send-btn:active {
+    transform: scale(0.95);
+}
+
+.nova-send-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .nova-page {
+        padding: 0;
+        align-items: stretch;
+    }
+
+    .nova-card {
+        height: 100vh;
+        border-radius: 0;
+        max-width: 100%;
+    }
+
+    .nova-suggestions {
+        grid-template-columns: 1fr;
+    }
+
+    .nova-bubble {
+        max-width: 68%;
+        padding: 10px 14px;
+        font-size: 14px;
+        line-height: 1.6;
+        border-radius: 16px;
+        word-break: break-word;
+    }
+}
