@@ -9,6 +9,7 @@ const pool = mysql.createPool({
   database: process.env.DB_NAME || 'socialapp',
   waitForConnections: true,
   connectionLimit: 10,
+  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
 })
 
 async function initDB() {
@@ -84,7 +85,7 @@ async function initDB() {
         FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE
       )
     `)
-    try { await conn.query(`ALTER TABLE users ADD COLUMN avatar_url VARCHAR(500) AFTER bio`) } catch {}
+    try { await conn.query(`ALTER TABLE users ADD COLUMN avatar_url VARCHAR(500) AFTER bio`) } catch { }
     console.log('✅ Database tables ready')
   } finally {
     conn.release()
