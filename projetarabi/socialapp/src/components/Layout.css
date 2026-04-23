@@ -292,6 +292,45 @@
   letter-spacing: 0.3px;
 }
 
+.topbar-menu-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text2);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.topbar-menu-btn:hover {
+  background: var(--card-hover);
+  color: var(--text);
+}
+
+.topbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.topbar-avatar:hover {
+  border-color: var(--accent);
+}
+
 /* ════════════════════════════════
    MOBILE — bottom nav
 ════════════════════════════════ */

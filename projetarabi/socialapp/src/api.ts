@@ -53,6 +53,8 @@ export const postsAPI = {
   addComment: (id: number, content: string) =>
     api(`/posts/${id}/comments`, { method: 'POST', body: JSON.stringify({ content }) }),
   delete:     (id: number) => api(`/posts/${id}`, { method: 'DELETE' }),
+  update:     (id: number, content: string) =>
+    api(`/posts/${id}`, { method: 'PUT', body: JSON.stringify({ content }) }),
 }
 
 export const friendsAPI = {

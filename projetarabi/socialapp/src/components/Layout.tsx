@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Outlet, NavLink, useNavigate, Navigate, Link } from 'react-router-dom'
-import { Home, Users, Search, MessageCircle, Settings, LogOut, Sparkles, MoreVertical, X, User, Settings2 } from 'lucide-react'
+import { Home, Users, Search, MessageCircle, Settings, LogOut, Sparkles, MoreVertical, X, User, Settings2, Menu } from 'lucide-react'
 import { getToken, getUser, clearAuth, avatarUrl } from '../api'
 import './Layout.css'
 
@@ -90,6 +90,18 @@ export default function Layout() {
             </div>
             <span>Atay</span>
           </Link>
+
+          <div className="topbar-right">
+            <img 
+              src={avatarUrl(user)} 
+              alt="profile" 
+              className="topbar-avatar"
+              onClick={() => navigate(`/profile/${user.id}`)}
+            />
+            <button className="topbar-menu-btn" onClick={() => setMenuOpen(true)}>
+              <Menu size={20} />
+            </button>
+          </div>
         </header>
 
         <Outlet />

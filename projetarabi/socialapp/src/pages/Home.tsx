@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { MessageCircle, Share2, Bookmark, MoreHorizontal, Image as ImageIcon, Send, X, ChevronDown } from 'lucide-react'
+import { MessageCircle, Share2, Bookmark, MoreHorizontal, Image as ImageIcon, Send, X, ChevronDown, Edit2, Trash2 } from 'lucide-react'
 import { postsAPI, usersAPI, friendsAPI, avatarUrl, getUser, API_BASE } from '../api'
 import './Home.css'
 
@@ -130,6 +130,22 @@ function PostCard({ post, onDelete }: { post: Post; onDelete: (id: number) => vo
   const [saved, setSaved] = useState(false)
   const [showComments, setShowComments] = useState(false)
   const [commentsCount] = useState(post.comments_count)
+  
+  const [showMenu, setShowMenu] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
+  const [editContent, setEditContent] = useState(post.content)
+  const [currentContent, setCurrentContent] = useState(post.content)
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setShowMenu(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   const toggleLike = async () => {
     try {
@@ -137,6 +153,18 @@ function PostCard({ post, onDelete }: { post: Post; onDelete: (id: number) => vo
       setLiked(res.liked)
       setLikes((n: number) => res.liked ? n + 1 : n - 1)
     } catch {}
+  }
+
+  const handleUpdate = async () => {
+    if (!editContent.trim() || editContent === currentContent) {
+      setIsEditing(false)
+      return
+    }
+    try {
+      await postsAPI.update(post.id, editContent)
+      setCurrentContent(editContent)
+      setIsEditing(false)
+    } catch (err) { console.error(err) }
   }
 
   const isVideo = post.image_url && (post.image_url.endsWith('.mp4') || post.image_url.endsWith('.mov'))
@@ -155,12 +183,42 @@ function PostCard({ post, onDelete }: { post: Post; onDelete: (id: number) => vo
           <p className="post-name">{post.first_name} {post.last_name}</p>
           <p className="post-sub">@{post.username} · {timeAgo(post.created_at)}</p>
         </div>
+        
         {me?.id === post.user_id && (
-          <button className="icon-btn ml-auto" onClick={() => onDelete(post.id)}><MoreHorizontal size={18} /></button>
+          <div className="post-menu-container" ref={menuRef}>
+            <button className="icon-btn ml-auto" onClick={() => setShowMenu(!showMenu)}>
+              <MoreHorizontal size={18} />
+            </button>
+            {showMenu && (
+              <div className="post-options-dropdown">
+                <button className="post-option-btn" onClick={() => { setIsEditing(true); setShowMenu(false) }}>
+                  <Edit2 size={16} /> Edit Post
+                </button>
+                <button className="post-option-btn delete" onClick={() => { onDelete(post.id); setShowMenu(false) }}>
+                  <Trash2 size={16} /> Delete Post
+                </button>
+              </div>
+            )}
+          </div>
         )}
       </div>
 
-      <p className="post-content">{post.content}</p>
+      {isEditing ? (
+        <div className="post-edit-box">
+          <textarea 
+            className="post-edit-textarea"
+            value={editContent}
+            onChange={e => setEditContent(e.target.value)}
+            autoFocus
+          />
+          <div className="post-edit-actions">
+            <button className="post-edit-save" onClick={handleUpdate}>Save</button>
+            <button className="post-edit-cancel" onClick={() => { setIsEditing(false); setEditContent(currentContent) }}>Cancel</button>
+          </div>
+        </div>
+      ) : (
+        <p className="post-content">{currentContent}</p>
+      )}
 
       {post.image_url && (
         <div className="post-image-wrap">
