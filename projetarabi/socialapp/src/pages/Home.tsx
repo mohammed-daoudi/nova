@@ -259,10 +259,16 @@ export default function Home() {
   const [submitting, setSubmitting] = useState(false)
   const [sentRequests, setSentRequests] = useState<number[]>([])
   const fileRef = useRef<HTMLInputElement>(null)
+  const [friends, setFriends] = useState<any[]>([])
+  const [mentionQuery, setMentionQuery] = useState('')
+  const [showMentions, setShowMentions] = useState(false)
+  const [mentionIndex, setMentionIndex] = useState(0)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
     postsAPI.feed().then(setPosts).catch(console.error).finally(() => setLoadingPosts(false))
     usersAPI.suggestions().then(setSuggestions).catch(console.error)
+    friendsAPI.list().then(setFriends).catch(console.error)
   }, [])
 
   const handleMediaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -277,6 +283,39 @@ export default function Home() {
     setMediaPreview(null)
     if (fileRef.current) fileRef.current.value = ''
   }
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const val = e.target.value
+    setPostText(val)
+    const cursor = e.target.selectionStart
+    const textUpToCursor = val.slice(0, cursor)
+    const mentionMatch = textUpToCursor.match(/@(\w*)$/)
+    if (mentionMatch) {
+      setMentionQuery(mentionMatch[1].toLowerCase())
+      setShowMentions(true)
+      setMentionIndex(0)
+    } else {
+      setShowMentions(false)
+      setMentionQuery('')
+    }
+  }
+
+  const insertMention = (username: string) => {
+    const cursor = textareaRef.current?.selectionStart || 0
+    const textUpToCursor = postText.slice(0, cursor)
+    const textAfterCursor = postText.slice(cursor)
+    const newText = textUpToCursor.replace(/@(\w*)$/, `@${username} `) + textAfterCursor
+    setPostText(newText)
+    setShowMentions(false)
+    setMentionQuery('')
+    setTimeout(() => textareaRef.current?.focus(), 0)
+  }
+
+  const filteredFriends = friends.filter(f =>
+    mentionQuery === '' ||
+    f.username.toLowerCase().includes(mentionQuery) ||
+    f.first_name.toLowerCase().includes(mentionQuery)
+  ).slice(0, 5)
 
   const handlePost = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -310,7 +349,32 @@ export default function Home() {
         <form className="composer animate-in" onSubmit={handlePost}>
           <img src={avatarUrl(me || {})} alt="" className="composer-avatar" />
           <div className="composer-body">
-            <textarea placeholder="What's on your mind?" value={postText} onChange={e => setPostText(e.target.value)} rows={2} />
+            <div style={{ position: 'relative', width: '100%' }}>
+              <textarea
+                ref={textareaRef}
+                placeholder="What's on your mind? Use @ to mention friends"
+                value={postText}
+                onChange={handleTextChange}
+                rows={2}
+              />
+              {showMentions && filteredFriends.length > 0 && (
+                <div className="mention-dropdown">
+                  {filteredFriends.map((f, i) => (
+                    <button
+                      key={f.id}
+                      className={`mention-item ${i === mentionIndex ? 'mention-item--active' : ''}`}
+                      onMouseDown={e => { e.preventDefault(); insertMention(f.username) }}
+                    >
+                      <img src={avatarUrl(f)} alt="" className="mention-avatar" />
+                      <div>
+                        <p className="mention-name">{f.first_name} {f.last_name}</p>
+                        <p className="mention-handle">@{f.username}</p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             {mediaPreview && (
               <div className="media-preview">
                 {isVideo(mediaFile?.name)
