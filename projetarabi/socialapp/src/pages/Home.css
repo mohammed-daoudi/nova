@@ -4,11 +4,13 @@
   margin: 0 auto;
   padding: 32px 24px;
   gap: 32px;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .feed-column {
   flex: 1;
-  min-width: 0;
+  min-width: 0;          /* critical: allows flex child to shrink below content size */
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -279,6 +281,7 @@
 
 .right-sidebar {
   width: 300px;
+  max-width: 300px;      /* prevents overflow if parent is narrower */
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -380,6 +383,13 @@
 
 @media (max-width: 1024px) {
   .right-sidebar { display: none; }
+}
+
+@media (max-width: 600px) {
+  .home-layout {
+    padding: 16px 12px;   /* tighter padding on small screens */
+    gap: 16px;
+  }
 }
 
 .feed-loading { display: flex; flex-direction: column; gap: 16px; }
