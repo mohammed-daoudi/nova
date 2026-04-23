@@ -43,12 +43,22 @@ export default function Chat() {
 
     const connect = () => {
       const token = getToken();
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
       
-      // Cleanly convert http(s) to ws(s)
-      const wsBase = apiUrl.replace(/^http/, 'ws');
+      // 1. Get the URL from env
+      const apiUrl = import.meta.env.VITE_API_URL;
       
+      let wsBase;
+      if (apiUrl) {
+        // If we have an API URL (Production), convert https to wss
+        wsBase = apiUrl.replace(/^http/, 'ws');
+      } else {
+        // Fallback for local development only
+        wsBase = 'ws://localhost:5000';
+      }
+      
+      console.log(`Current VITE_API_URL: ${apiUrl}`); // Debug: see what Vercel thinks it is
       console.log(`Attempting connection to: ${wsBase}/ws`);
+      
       socket = new WebSocket(`${wsBase}/ws?token=${token}`);
       ws.current = socket;
 
