@@ -8,6 +8,7 @@ interface Message {
   sender_id: number; receiver_id: number
   first_name: string; last_name: string; username: string
   avatar_seed: string; avatar_url?: string
+  edited_at?: string
 }
 interface Conversation {
   id: number; first_name: string; last_name: string; username: string
@@ -36,6 +37,8 @@ export default function Chat() {
   const ws = useRef<WebSocket | null>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
   const typingTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [editingId, setEditingId] = useState<number | null>(null)
+  const [editText, setEditText] = useState('')
 
   useEffect(() => {
     let socket: WebSocket | null = null;
@@ -149,6 +152,28 @@ export default function Chat() {
     }
   }
 
+  const handleEdit = async (messageId: number, newContent: string) => {
+    if (!newContent.trim()) return
+    try {
+      await messagesAPI.edit(messageId, newContent)
+      setMessages(prev => prev.map(m =>
+        m.id === messageId ? { ...m, content: newContent, edited_at: new Date().toISOString() } : m
+      ))
+      setEditingId(null)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const handleDelete = async (messageId: number) => {
+    try {
+      await messagesAPI.delete(messageId)
+      setMessages(prev => prev.filter(m => m.id !== messageId))
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   const allContacts: Conversation[] = [
     ...conversations,
     ...friends.filter(f => !conversations.find(c => c.id === f.id))
@@ -238,9 +263,34 @@ export default function Chat() {
                 return (
                   <div key={m.id} className={`chat-msg ${isMine ? 'chat-msg--mine' : 'chat-msg--theirs'}`}>
                     {!isMine && <img src={avatarUrl(m)} alt="" className="chat-msg-avatar" />}
-                    <div>
-                      <div className="chat-msg-bubble">{m.content}</div>
+                    <div className="chat-msg-wrap">
+                      {editingId === m.id ? (
+                        <input
+                          className="chat-edit-input"
+                          value={editText}
+                          onChange={e => setEditText(e.target.value)}
+                          onKeyDown={e => {
+                            if (e.key === 'Enter') handleEdit(m.id, editText)
+                            if (e.key === 'Escape') setEditingId(null)
+                          }}
+                          autoFocus
+                        />
+                      ) : (
+                        <div className="chat-msg-bubble">
+                          {m.content}{m.edited_at && <span className="chat-msg-edited">(edited)</span>}
+                        </div>
+                      )}
                       <span className="chat-msg-time">{timeAgo(m.created_at)}</span>
+                      {isMine && editingId !== m.id && (
+                        <div className="chat-msg-actions">
+                          <button className="chat-msg-action-btn" onClick={() => { setEditingId(m.id); setEditText(m.content) }}>
+                            Edit
+                          </button>
+                          <button className="chat-msg-action-btn delete" onClick={() => handleDelete(m.id)}>
+                            Delete
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )

@@ -77,8 +77,8 @@ export default function Login() {
 
       <div className="auth-showcase">
         <div className="showcase-content">
-          <h2>Your social world,<br />reimagined.</h2>
-          <p>Connect, share, and discover with people who matter most.</p>
+          <h2>SH77ER ATAY ,<br />W KHWI SHI KASS.</h2>
+          <p>tconnecta w hakki w hakki ya laalla</p>
         </div>
       </div>
     </div>

@@ -447,3 +447,63 @@
 .chat-seen-icon.seen {
   color: var(--accent);
 }
+
+.chat-msg-wrap {
+  position: relative;
+}
+
+.chat-msg-wrap:hover .chat-msg-actions {
+  opacity: 1;
+}
+
+.chat-msg-actions {
+  opacity: 0;
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+  transition: opacity 0.15s;
+  justify-content: flex-end;
+}
+
+.chat-msg--theirs .chat-msg-actions {
+  justify-content: flex-start;
+}
+
+.chat-msg-action-btn {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 11px;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.chat-msg-action-btn:hover {
+  background: var(--card-hover);
+  color: var(--text);
+}
+
+.chat-msg-action-btn.delete:hover {
+  color: #e05c7a;
+  border-color: #e05c7a;
+}
+
+.chat-msg-edited {
+  font-size: 10px;
+  color: var(--text3);
+  margin-left: 4px;
+}
+
+.chat-edit-input {
+  background: var(--bg3);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  width: 100%;
+}

@@ -73,6 +73,10 @@ export const messagesAPI = {
   thread:        (userId: number) => api(`/messages/${userId}`),
   send:          (userId: number, content: string) =>
     api(`/messages/${userId}`, { method: 'POST', body: JSON.stringify({ content }) }),
+  edit: (messageId: number, content: string) =>
+    api(`/messages/${messageId}`, { method: 'PUT', body: JSON.stringify({ content }) }),
+  delete: (messageId: number) =>
+    api(`/messages/${messageId}`, { method: 'DELETE' }),
 }
 
 export const profileAPI = {

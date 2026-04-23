@@ -8,7 +8,7 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [form, setForm] = useState({ first_name:'', last_name:'', username:'', email:'', password:'' })
+  const [form, setForm] = useState({ first_name: '', last_name: '', username: '', email: '', password: '' })
   const navigate = useNavigate()
 
   const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -93,8 +93,8 @@ export default function Register() {
 
       <div className="auth-showcase">
         <div className="showcase-content">
-          <h2>Start your<br />journey<br />today.</h2>
-          <p>Millions of people use Vibe to share moments and stay connected.</p>
+          <h2>SH77ER ATAY ,<br />W KHWI SHI KASS.</h2>
+          <p>tconnecta w hakki w hakki ya laalla</p>
         </div>
       </div>
     </div>

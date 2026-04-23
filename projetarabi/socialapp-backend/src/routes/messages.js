@@ -82,4 +82,41 @@ router.post('/:userId', auth, async (req, res) => {
   }
 })
 
+// Edit message
+router.put('/:messageId', auth, async (req, res) => {
+  const { content } = req.body
+  if (!content || !content.trim()) return res.status(400).json({ error: 'Content required' })
+  try {
+    const [rows] = await pool.query(
+      'SELECT * FROM messages WHERE id = ? AND sender_id = ?',
+      [req.params.messageId, req.user.id]
+    )
+    if (rows.length === 0) return res.status(403).json({ error: 'Not authorized' })
+    await pool.query(
+      'UPDATE messages SET content = ?, edited_at = NOW() WHERE id = ?',
+      [content.trim(), req.params.messageId]
+    )
+    res.json({ success: true, content: content.trim() })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
+// Delete message
+router.delete('/:messageId', auth, async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      'SELECT * FROM messages WHERE id = ? AND sender_id = ?',
+      [req.params.messageId, req.user.id]
+    )
+    if (rows.length === 0) return res.status(403).json({ error: 'Not authorized' })
+    await pool.query('DELETE FROM messages WHERE id = ?', [req.params.messageId])
+    res.json({ success: true })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Server error' })
+  }
+})
+
 module.exports = router
