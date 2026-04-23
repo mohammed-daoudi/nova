@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Eye, EyeOff, Zap, ArrowRight } from 'lucide-react'
+import { Eye, EyeOff, ArrowRight } from 'lucide-react'
 import { authAPI, setAuth } from '../api'
+import atayImg from '../public/atay.jpeg'
+import atayMobileImg from '../public/atayMobile.jpeg'
 import './Auth.css'
 
 export default function Login() {
@@ -28,15 +30,39 @@ export default function Login() {
   }
 
   return (
-    <div className="auth-page">
-      <div className="blob blob-1" />
-      <div className="blob blob-2" />
-      <div className="blob blob-3" />
+    <div
+      className="auth-page"
+      style={{
+        '--hero-img': `url(${atayImg})`,
+        '--mobile-hero-img': `url(${atayMobileImg})`,
+      } as React.CSSProperties}
+    >
 
+      {/* ── Side A: Visual / Hero (desktop only) ── */}
+      <div className="auth-showcase">
+        <div
+          className="auth-showcase-bg"
+          style={{ '--hero-img': `url(${atayImg})` } as React.CSSProperties}
+        />
+        <div className="auth-showcase-gradient" />
+        <div className="showcase-content">
+          <h2>SH77ER ATAY ,<br />W KHWI SHI KASS.</h2>
+          <p>tconnecta w hakki w hakki ya laalla</p>
+        </div>
+      </div>
+
+      {/* ── Side B: Form ── */}
       <div className="auth-card animate-in">
         <div className="auth-logo">
-          <div className="logo-icon"><Zap size={22} fill="currentColor" /></div>
-          <span>ATAY</span>
+          <div className="logo-icon">
+            <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 12h16a8 8 0 0 1 0 16H6V12Z" fill="white" opacity="0.95"/>
+              <path d="M22 16c3 0 6 1.5 6 4s-3 4-6 4" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+              <path d="M10 12V9a3 3 0 0 1 6 0v3" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+              <rect x="8" y="26" width="12" height="2" rx="1" fill="white" opacity="0.7"/>
+            </svg>
+          </div>
+          <span>Atay</span>
         </div>
 
         <div className="auth-header">
@@ -75,12 +101,6 @@ export default function Login() {
         </p>
       </div>
 
-      <div className="auth-showcase">
-        <div className="showcase-content">
-          <h2>SH77ER ATAY ,<br />W KHWI SHI KASS.</h2>
-          <p>tconnecta w hakki w hakki ya laalla</p>
-        </div>
-      </div>
     </div>
   )
 }

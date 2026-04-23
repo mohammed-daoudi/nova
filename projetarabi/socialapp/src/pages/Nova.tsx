@@ -14,13 +14,13 @@ const SUGGESTIONS = [
     { icon: "💬", text: "Help me draft a message" },
 ];
 
-const NovaLogo = ({ size = 20 }: { size?: number }) => (
-    <svg width={size} height={size} viewBox="0 0 28 28" fill="none">
-        <circle cx="14" cy="10" r="5" fill="white" opacity="0.95" />
-        <circle cx="8" cy="19" r="3.5" fill="white" opacity="0.7" />
-        <circle cx="20" cy="19" r="3.5" fill="white" opacity="0.7" />
-        <line x1="14" y1="15" x2="8" y2="19" stroke="white" strokeWidth="1.5" opacity="0.5" />
-        <line x1="14" y1="15" x2="20" y2="19" stroke="white" strokeWidth="1.5" opacity="0.5" />
+/* Teapot "Berrad" SVG logo for L'BERRAD AI */
+const BerradLogo = ({ size = 20 }: { size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 11h16a8 8 0 0 1 0 16H5V11Z" fill="white" opacity="0.95" />
+        <path d="M21 15c3 0 6 1.5 6 4s-3 4-6 4" stroke="white" strokeWidth="2" strokeLinecap="round" />
+        <path d="M9 11V8a3 3 0 0 1 6 0v3" stroke="white" strokeWidth="2" strokeLinecap="round" />
+        <rect x="7" y="26" width="12" height="2" rx="1" fill="white" opacity="0.75" />
     </svg>
 );
 
@@ -116,10 +116,10 @@ export default function Nova() {
                 {/* Header */}
                 <div className="nova-header">
                     <div className="nova-logo">
-                        <NovaLogo size={22} />
+                        <BerradLogo size={22} />
                     </div>
                     <div className="nova-header-info">
-                        <h2>Nova <span className="nova-badge">AI</span></h2>
+                        <h2>L'BERRAD <span className="nova-badge">AI</span></h2>
                         <p>Always online</p>
                     </div>
                     {messages.length > 0 && (
@@ -135,11 +135,11 @@ export default function Nova() {
                         <div className="nova-welcome">
                             <div className="nova-glow-ring">
                                 <div className="nova-welcome-logo">
-                                    <NovaLogo size={38} />
+                                    <BerradLogo size={38} />
                                 </div>
                             </div>
-                            <h3>Hey, I'm Nova</h3>
-                            <p>Your AI companion on ATAY. Ask me anything or pick something below.</p>
+                            <h3>Marhba! L'Berrad rah msh77er w 3amr  .</h3>
+                            <p>Marhba! L'Berrad is ready. Let's talk over some tea.</p>
                             <div className="nova-suggestions">
                                 {SUGGESTIONS.map((s) => (
                                     <button
@@ -162,7 +162,7 @@ export default function Nova() {
                                 >
                                     {msg.role === "assistant" && (
                                         <div className="nova-avatar">
-                                            <NovaLogo size={14} />
+                                            <BerradLogo size={14} />
                                         </div>
                                     )}
                                     <div>
@@ -176,7 +176,7 @@ export default function Nova() {
                             {loading && (
                                 <div className="nova-message-row">
                                     <div className="nova-avatar">
-                                        <NovaLogo size={14} />
+                                        <BerradLogo size={14} />
                                     </div>
                                     <div className="nova-typing">
                                         <span /><span /><span />
@@ -195,7 +195,7 @@ export default function Nova() {
                         value={input}
                         onChange={handleTextareaChange}
                         onKeyDown={handleKeyDown}
-                        placeholder="Ask Nova anything..."
+                        placeholder="Ask L'Berrad anything..."
                         rows={1}
                         disabled={loading}
                     />

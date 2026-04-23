@@ -1,57 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap');
 
+/* ── Atay Brand Tokens ── */
 :root {
-  --bg: #1e2130;
-  --bg2: #252a3d;
-  --bg3: #2f3450;
-  --border: rgba(255, 255, 255, 0.07);
-  --accent: #7f77dd;
-  --accent2: #1d9e75;
-  --accent3: #afa9ec;
-  --text: #f0f0f8;
-  --text2: #8b92b8;
-  --text3: #454b6b;
-  --card: rgba(255, 255, 255, 0.03);
-  --card-hover: rgba(255, 255, 255, 0.06);
-  --radius: 16px;
+  --atay-amber:  #B87333;
+  --atay-amber2: #d4893a;
+  --atay-mint:   #2D5A27;
+  --atay-cream:  #FDF9F3;
+  --atay-dark:   #1A1A1A;
+
+  /* App dark-mode tokens */
+  --bg:          #1e2130;
+  --bg2:         #252a3d;
+  --bg3:         #2f3450;
+  --border:      rgba(255, 255, 255, 0.07);
+
+  /* Primary = amber, secondary = mint */
+  --accent:      #B87333;
+  --accent2:     #2D5A27;
+  --accent3:     #d4893a;
+
+  --text:        #f0f0f8;
+  --text2:       #8b92b8;
+  --text3:       #454b6b;
+  --card:        rgba(255, 255, 255, 0.03);
+  --card-hover:  rgba(255, 255, 255, 0.06);
+  --radius:      16px;
   --sidebar-slim: 64px;
   --sidebar-full: 220px;
-  --sidebar: var(--sidebar-slim);
-  --bottom-nav: 64px;
+  --sidebar:     var(--sidebar-slim);
+  --bottom-nav:  64px;
 }
 
+/* ── Reset ── */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* ── Base ── */
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 15px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5 {
-  font-family: 'Syne', sans-serif;
+h1, h2, h3, h4, h5 {
+  font-family: 'Poppins', sans-serif;
 }
 
 button {
   cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
-input,
-textarea {
-  font-family: 'DM Sans', sans-serif;
+input, textarea {
+  font-family: 'Poppins', sans-serif;
 }
 
 a {
@@ -59,53 +68,29 @@ a {
   color: inherit;
 }
 
-::-webkit-scrollbar {
-  width: 4px;
-}
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 99px;
-}
-
+/* ── Keyframes ── */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-12px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
 
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.5;
-  }
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 .animate-in {

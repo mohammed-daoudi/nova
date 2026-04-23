@@ -27,7 +27,7 @@
   width: var(--sidebar-full);
 }
 
-/* Logo */
+/* Logo (now a Link element) */
 .sidebar-logo {
   display: flex;
   align-items: center;
@@ -36,6 +36,8 @@
   margin-bottom: 32px;
   overflow: hidden;
   white-space: nowrap;
+  text-decoration: none;  /* remove link underline */
+  cursor: pointer;
 }
 
 .logo-icon {
@@ -51,13 +53,10 @@
 }
 
 .logo-text {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 20px;
   font-weight: 800;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #B87333;
   opacity: 0;
   transform: translateX(-8px);
   transition: opacity 0.2s ease 0.05s, transform 0.2s ease 0.05s;
@@ -121,24 +120,24 @@
 }
 
 .nav-item--active {
-  background: rgba(127, 119, 221, 0.15);
-  color: var(--accent);
+  background: rgba(184, 115, 51, 0.14);
+  color: #B87333;
 }
 
 .nav-item--active svg {
-  color: var(--accent);
+  color: #B87333;
 }
 
-/* Nova badge */
+/* L'BERRAD badge */
 .nova-nav-badge {
-  background: rgba(127, 119, 221, 0.2);
-  color: var(--accent);
+  background: rgba(184, 115, 51, 0.18);
+  color: #d4893a;
   font-size: 10px;
   font-weight: 700;
   padding: 2px 7px;
   border-radius: 20px;
   margin-left: auto;
-  border: 1px solid rgba(127, 119, 221, 0.3);
+  border: 1px solid rgba(184, 115, 51, 0.32);
   opacity: 0;
   transition: opacity 0.2s ease 0.05s;
   flex-shrink: 0;
@@ -243,6 +242,54 @@
   flex: 1;
   min-height: 100vh;
   transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-top: 52px; /* room for topbar */
+}
+
+/* ── Atay Topbar (top-left brand link, desktop + mobile) ── */
+.atay-topbar {
+  position: fixed;
+  top: 0;
+  left: var(--sidebar-slim);
+  right: 0;
+  height: 52px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  z-index: 90;
+  transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.atay-topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  transition: opacity 0.18s;
+}
+
+.atay-topbar-brand:hover {
+  opacity: 0.78;
+}
+
+.atay-topbar-icon {
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, #8a5220, #B87333);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.atay-topbar-brand span {
+  font-family: 'Poppins', sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  color: #B87333;
+  letter-spacing: 0.3px;
 }
 
 /* ════════════════════════════════
@@ -257,9 +304,15 @@
     display: none;
   }
 
+  /* Topbar spans full width on mobile — no sidebar offset */
+  .atay-topbar {
+    left: 0;
+  }
+
   .main-content {
     margin-left: 0;
     padding-bottom: var(--bottom-nav);
+    /* padding-top already set globally to 52px for topbar */
   }
 
   .mobile-nav {

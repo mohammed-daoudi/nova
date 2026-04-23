@@ -1,8 +1,48 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Heart, MessageCircle, Share2, Bookmark, MoreHorizontal, Image as ImageIcon, Send, X, ChevronDown } from 'lucide-react'
+import { MessageCircle, Share2, Bookmark, MoreHorizontal, Image as ImageIcon, Send, X, ChevronDown } from 'lucide-react'
 import { postsAPI, usersAPI, friendsAPI, avatarUrl, getUser, API_BASE } from '../api'
 import './Home.css'
+
+/* ── Berrad (Teapot) Like Icon with bottom-to-top fill animation ── */
+function BerradIcon({ liked, size = 18 }: { liked: boolean; size?: number }) {
+  const id = `berrad-clip-${size}`
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ transition: 'filter 0.3s', filter: liked ? 'drop-shadow(0 0 4px #B87333)' : 'none' }}
+    >
+      <defs>
+        <clipPath id={id}>
+          {/* This rect slides up from 100% → 0% via CSS when liked */}
+          <rect
+            x="0"
+            y={liked ? '0%' : '100%'}
+            width="100%"
+            height="100%"
+            style={{ transition: 'y 0.55s cubic-bezier(0.22, 1, 0.36, 1)' }}
+          />
+        </clipPath>
+      </defs>
+      {/* Outline teapot (always visible) */}
+      <path d="M5 11h16a8 8 0 0 1 0 16H5V11Z" stroke="currentColor" strokeWidth="1.8" fill="none"/>
+      <path d="M21 15c3 0 6 1.5 6 4s-3 4-6 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" fill="none"/>
+      <path d="M9 11V8a3 3 0 0 1 6 0v3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" fill="none"/>
+      <rect x="7" y="26" width="12" height="2" rx="1" fill="currentColor" opacity="0.5"/>
+      {/* Filled teapot (clipped for animation) */}
+      <g clipPath={`url(#${id})`}>
+        <path d="M5 11h16a8 8 0 0 1 0 16H5V11Z" fill="#B87333"/>
+        <path d="M21 15c3 0 6 1.5 6 4s-3 4-6 4" stroke="#B87333" strokeWidth="1.8" strokeLinecap="round" fill="none"/>
+        <path d="M9 11V8a3 3 0 0 1 6 0v3" stroke="#B87333" strokeWidth="1.8" strokeLinecap="round" fill="none"/>
+        <rect x="7" y="26" width="12" height="2" rx="1" fill="#B87333"/>
+      </g>
+    </svg>
+  )
+}
 
 interface Post {
   id: number; content: string; image_url?: string; created_at: string
@@ -133,7 +173,7 @@ function PostCard({ post, onDelete }: { post: Post; onDelete: (id: number) => vo
 
       <div className="post-actions">
         <button className={`action-btn ${liked ? 'action-btn--liked' : ''}`} onClick={toggleLike}>
-          <Heart size={18} fill={liked ? 'currentColor' : 'none'} /><span>{likes}</span>
+          <BerradIcon liked={liked} size={18} /><span>{likes}</span>
         </button>
         <button className="action-btn" onClick={() => { setShowComments(s => !s); }}>
           <MessageCircle size={18} /><span>{commentsCount}</span>

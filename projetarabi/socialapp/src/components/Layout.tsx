@@ -1,10 +1,8 @@
 import { useState } from 'react'
-import { Outlet, NavLink, useNavigate, Navigate } from 'react-router-dom'
-import { Home, Users, Search, MessageCircle, Settings, LogOut, Zap, Sparkles, MoreVertical, X, User, Settings2 } from 'lucide-react'
+import { Outlet, NavLink, useNavigate, Navigate, Link } from 'react-router-dom'
+import { Home, Users, Search, MessageCircle, Settings, LogOut, Sparkles, MoreVertical, X, User, Settings2 } from 'lucide-react'
 import { getToken, getUser, clearAuth, avatarUrl } from '../api'
 import './Layout.css'
-
-
 
 const navItems = [
   { to: '/home', icon: Home, label: 'Home' },
@@ -26,10 +24,18 @@ export default function Layout() {
   return (
     <div className="layout">
       <aside className="sidebar">
-        <div className="sidebar-logo">
-          <div className="logo-icon"><Zap size={20} fill="currentColor" /></div>
-          <span className="logo-text">ATAY</span>
-        </div>
+        {/* Logo → clickable, links to /home */}
+        <Link to="/home" className="sidebar-logo">
+          <div className="logo-icon" style={{ background: 'linear-gradient(135deg,#8a5220,#B87333)' }}>
+            <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+              <path d="M5 11h16a8 8 0 0 1 0 16H5V11Z" fill="white" opacity="0.95"/>
+              <path d="M21 15c3 0 6 1.5 6 4s-3 4-6 4" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+              <path d="M9 11V8a3 3 0 0 1 6 0v3" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+              <rect x="7" y="26" width="12" height="2" rx="1" fill="white" opacity="0.7"/>
+            </svg>
+          </div>
+          <span className="logo-text">Atay</span>
+        </Link>
 
         <nav className="sidebar-nav">
           {navItems.map(({ to, icon: Icon, label }) => (
@@ -41,7 +47,7 @@ export default function Layout() {
 
           <NavLink to="/nova" className={({ isActive }) => 'nav-item ' + (isActive ? 'nav-item--active' : '')}>
             <Sparkles size={20} />
-            <span>Nova</span>
+            <span>L'BERRAD</span>
             <span className="nova-nav-badge">AI</span>
           </NavLink>
         </nav>
@@ -71,6 +77,21 @@ export default function Layout() {
       </aside>
 
       <main className="main-content">
+        {/* ── Atay topbar brand — desktop & mobile ── */}
+        <header className="atay-topbar">
+          <Link to="/home" className="atay-topbar-brand">
+            <div className="atay-topbar-icon">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
+                <path d="M5 11h16a8 8 0 0 1 0 16H5V11Z" fill="white" opacity="0.95"/>
+                <path d="M21 15c3 0 6 1.5 6 4s-3 4-6 4" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+                <path d="M9 11V8a3 3 0 0 1 6 0v3" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+                <rect x="7" y="26" width="12" height="2" rx="1" fill="white" opacity="0.7"/>
+              </svg>
+            </div>
+            <span>Atay</span>
+          </Link>
+        </header>
+
         <Outlet />
       </main>
 
@@ -88,7 +109,7 @@ export default function Layout() {
           <MessageCircle size={20} /><span>Chat</span>
         </NavLink>
         <NavLink to="/nova" className={({ isActive }) => 'mobile-nav-item ' + (isActive ? 'nav-item--active' : '')}>
-          <Sparkles size={20} /><span>Nova</span>
+          <Sparkles size={20} /><span>L'BERRAD</span>
         </NavLink>
         <button className="mobile-nav-item mobile-nav-more" onClick={() => setMenuOpen(true)}>
           <MoreVertical size={20} /><span>More</span>
