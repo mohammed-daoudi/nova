@@ -3,6 +3,10 @@
     {
       "source": "/api/:path*",
       "destination": "https://vibe-backend-aw33.onrender.com/api/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
