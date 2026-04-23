@@ -259,7 +259,7 @@ export default function Chat() {
                 onChange={handleTyping}
                 placeholder={`Message ${selected.first_name}...`}
               />
-              <button type="submit" disabled={!text.trim()}>
+              <button type="submit" disabled={!text.trim() || !connected}>
                 <Send size={18} />
               </button>
             </form>
