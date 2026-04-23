@@ -38,36 +38,69 @@ export default function Chat() {
   const typingTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
-    const token = getToken()
-    const wsBase = import.meta.env.VITE_API_URL
-      ? import.meta.env.VITE_API_URL.replace('https://', 'wss://').replace('http://', 'ws://')
-      : 'ws://localhost:5000'
-    const socket = new WebSocket(`${wsBase}/ws?token=${token}`)
-    ws.current = socket
-    socket.onopen = () => setConnected(true)
-    socket.onclose = () => setConnected(false)
-    socket.onmessage = (e) => {
-      const data = JSON.parse(e.data)
-      if (data.type === 'message') {
-        setMessages(prev => [...prev, data.message])
-        setConversations(prev => {
-          const existing = prev.find(c => c.id === data.message.sender_id)
-          if (!existing) return prev
-          return [{ ...existing, last_message: data.message.content },
-          ...prev.filter(c => c.id !== data.message.sender_id)]
-        })
-      }
-      if (data.type === 'message_sent') setMessages(prev => [...prev, data.message])
-      if (data.type === 'typing') {
-        if (selected && data.sender_id === selected.id) {
-          setIsTyping(true)
-          if (typingTimer.current) clearTimeout(typingTimer.current)
-          typingTimer.current = setTimeout(() => setIsTyping(false), 2000)
+    let socket: WebSocket | null = null;
+    let reconnectionTimeout: ReturnType<typeof setTimeout>;
+
+    const connect = () => {
+      const token = getToken();
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      
+      // Cleanly convert http(s) to ws(s)
+      const wsBase = apiUrl.replace(/^http/, 'ws');
+      
+      console.log(`Attempting connection to: ${wsBase}/ws`);
+      socket = new WebSocket(`${wsBase}/ws?token=${token}`);
+      ws.current = socket;
+
+      socket.onopen = () => {
+        console.log("Connected to WebSocket");
+        setConnected(true);
+      };
+
+      socket.onclose = (e) => {
+        setConnected(false);
+        console.log(`Socket closed. Reconnecting in 3s...`, e.reason);
+        // Essential for Render Free Tier: try again if it fails/sleeps
+        reconnectionTimeout = setTimeout(connect, 3000);
+      };
+
+      socket.onerror = (err) => {
+        console.error("WebSocket Error:", err);
+        // Closing manually here triggers the onclose reconnection logic
+        socket?.close();
+      };
+
+      socket.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+        if (data.type === 'message') {
+          setMessages(prev => [...prev, data.message]);
+          setConversations(prev => {
+            const existing = prev.find(c => c.id === data.message.sender_id);
+            if (!existing) return prev;
+            return [{ ...existing, last_message: data.message.content },
+            ...prev.filter(c => c.id !== data.message.sender_id)];
+          });
         }
-      }
-    }
-    return () => { socket.close() }
-  }, [])
+        if (data.type === 'message_sent') setMessages(prev => [...prev, data.message]);
+        if (data.type === 'typing') {
+          // Note: added a check to ensure selected isn't null
+          if (selected && data.sender_id === selected.id) {
+            setIsTyping(true);
+            if (typingTimer.current) clearTimeout(typingTimer.current);
+            typingTimer.current = setTimeout(() => setIsTyping(false), 2000);
+          }
+        }
+      };
+    };
+
+    connect();
+
+    return () => {
+      if (reconnectionTimeout) clearTimeout(reconnectionTimeout);
+      socket?.close();
+    };
+    // Re-run if selected changes to ensure typing status works correctly
+  }, [selected]);
 
   useEffect(() => {
     messagesAPI.conversations().then(setConversations).catch(console.error)
@@ -96,17 +129,21 @@ export default function Chat() {
   const sendMessage = useCallback((e: React.FormEvent) => {
     e.preventDefault()
     if (!text.trim() || !selected || !ws.current) return
-    ws.current.send(JSON.stringify({
-      type: 'message',
-      receiver_id: selected.id,
-      content: text.trim(),
-    }))
+    if (ws.current.readyState === WebSocket.OPEN) {
+      ws.current.send(JSON.stringify({
+        type: 'message',
+        receiver_id: selected.id,
+        content: text.trim(),
+      }))
+    } else {
+      console.warn("Cannot send message: WebSocket is not open.")
+    }
     setText('')
   }, [text, selected])
 
   const handleTyping = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value)
-    if (ws.current && selected) {
+    if (ws.current && selected && ws.current.readyState === WebSocket.OPEN) {
       ws.current.send(JSON.stringify({ type: 'typing', receiver_id: selected.id }))
     }
   }
