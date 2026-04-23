@@ -30,33 +30,7 @@ router.get('/search', auth, async (req, res) => {
 })
 
 router.get('/suggestions', auth, async (req, res) => {
-  try {
-    const [rows] = await pool.query(
-      `SELECT u.id, u.first_name, u.last_name, u.username, u.bio, u.avatar_seed,
-        COALESCE((
-          SELECT COUNT(*) FROM friendships f2
-          WHERE ((f2.requester_id = u.id AND f2.receiver_id IN
-                  (SELECT receiver_id FROM friendships WHERE requester_id = ? AND status = 'accepted'))
-              OR (f2.receiver_id = u.id AND f2.requester_id IN
-                  (SELECT receiver_id FROM friendships WHERE requester_id = ? AND status = 'accepted')))
-          AND f2.status = 'accepted'
-        ), 0) AS mutual_count
-       FROM users u
-       WHERE u.id != ?
-         AND u.id NOT IN (
-           SELECT CASE WHEN requester_id = ? THEN receiver_id ELSE requester_id END
-           FROM friendships
-           WHERE (requester_id = ? OR receiver_id = ?) AND status != 'declined'
-         )
-       ORDER BY mutual_count DESC
-       LIMIT 12`,
-      [req.user.id, req.user.id, req.user.id, req.user.id, req.user.id, req.user.id]
-    )
-    res.json(rows)
-  } catch (err) {
-    console.error(err)
-    res.status(500).json({ error: 'Server error' })
-  }
+  res.json([])
 })
 
 router.get('/:id', auth, async (req, res) => {

@@ -360,14 +360,17 @@
     bottom: 0;
     left: 0;
     right: 0;
+    width: 100%;
     height: var(--bottom-nav);
     background: var(--bg2);
     border-top: 1px solid var(--border);
     z-index: 100;
     align-items: center;
     justify-content: space-around;
-    padding: 0 8px;
+    padding: 0;
     padding-bottom: env(safe-area-inset-bottom);
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
   .mobile-nav-item {
