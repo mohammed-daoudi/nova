@@ -239,7 +239,7 @@ export default function Chat() {
                   <div key={m.id} className={`chat-msg ${isMine ? 'chat-msg--mine' : 'chat-msg--theirs'}`}>
                     {!isMine && <img src={avatarUrl(m)} alt="" className="chat-msg-avatar" />}
                     <div>
-                      <div className="chat-msg-bubble"><p>{m.content}</p></div>
+                      <div className="chat-msg-bubble">{m.content}</div>
                       <span className="chat-msg-time">{timeAgo(m.created_at)}</span>
                     </div>
                   </div>

@@ -209,52 +209,42 @@
   gap: 8px;
   align-items: flex-end;
   width: 100%;
+  margin-bottom: 4px; /* Space between bubbles */
 }
 
-.chat-msg--mine {
-  flex-direction: row-reverse;
-}
+/* mine vs theirs container logic */
+.chat-msg--mine { flex-direction: row-reverse; }
 
-.chat-msg--mine > div { 
-  align-items: flex-end; 
-  display: flex; 
-  flex-direction: column;
-  max-width: 75%;
-  width: fit-content; 
-}
-
+.chat-msg--mine > div,
 .chat-msg--theirs > div { 
-  align-items: flex-start; 
   display: flex; 
   flex-direction: column;
-  max-width: 75%;
-  width: fit-content; 
+  max-width: 75%; /* Limit width */
+  width: fit-content; /* CRITICAL: prevents stretching to 100% */
 }
 
-.chat-msg-avatar {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  object-fit: cover;
-  background: var(--bg3);
-}
+.chat-msg--mine > div { align-items: flex-end; }
+.chat-msg--theirs > div { align-items: flex-start; }
 
+/* The Bubble itself */
 .chat-msg-bubble {
   padding: 10px 14px;
   border-radius: 18px;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.4;
+  /* FIX: changed from break-all to break-word */
   word-wrap: break-word; 
+  overflow-wrap: break-word;
+  /* FIX: removed width: 100% and min-width */
   width: auto; 
-  display: inline-block;
-  box-sizing: border-box;
+  display: block; 
 }
 
 .chat-msg--mine .chat-msg-bubble {
   background: linear-gradient(135deg, var(--accent), #a89ef0);
   color: white;
   border-bottom-right-radius: 4px;
+  text-align: left; /* Text stays left inside the purple bubble */
 }
 
 .chat-msg--theirs .chat-msg-bubble {
