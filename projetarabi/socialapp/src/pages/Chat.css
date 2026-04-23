@@ -220,6 +220,7 @@
   display: flex; 
   flex-direction: column;
   max-width: 75%;
+  width: fit-content; 
 }
 
 .chat-msg--theirs > div { 
@@ -227,6 +228,7 @@
   display: flex; 
   flex-direction: column;
   max-width: 75%;
+  width: fit-content; 
 }
 
 .chat-msg-avatar {
@@ -243,10 +245,9 @@
   border-radius: 18px;
   font-size: 14px;
   line-height: 1.5;
-  word-break: break-all;
-  display: block;
-  width: 100%;
-  min-width: 100px;
+  word-wrap: break-word; 
+  width: auto; 
+  display: inline-block;
   box-sizing: border-box;
 }
 
@@ -407,8 +408,9 @@
     display: flex;
   }
 
-  .chat-msg-bubble {
-    max-width: 80%;
+  .chat-msg--mine > div, 
+  .chat-msg--theirs > div {
+    max-width: 85%;
   }
 }
 .chat-contact-top {
