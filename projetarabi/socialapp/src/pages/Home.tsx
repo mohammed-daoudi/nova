@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Heart, MessageCircle, Share2, Bookmark, MoreHorizontal, Image as ImageIcon, Send, X, ChevronDown } from 'lucide-react'
-import { postsAPI, usersAPI, friendsAPI, avatarUrl, getUser } from '../api'
+import { postsAPI, usersAPI, friendsAPI, avatarUrl, getUser, API_BASE } from '../api'
 import './Home.css'
 
 interface Post {
@@ -125,8 +125,8 @@ function PostCard({ post, onDelete }: { post: Post; onDelete: (id: number) => vo
       {post.image_url && (
         <div className="post-image-wrap">
           {isVideo
-            ? <video src={`http://localhost:5000${post.image_url}`} controls className="post-image" />
-            : <img src={`http://localhost:5000${post.image_url}`} alt="" className="post-image" loading="lazy" />
+            ? <video src={post.image_url.startsWith('http') ? post.image_url : `${API_BASE}${post.image_url}`} controls className="post-image" />
+            : <img src={post.image_url.startsWith('http') ? post.image_url : `${API_BASE}${post.image_url}`} alt="" className="post-image" loading="lazy" />
           }
         </div>
       )}

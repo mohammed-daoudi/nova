@@ -43,7 +43,7 @@ router.post('/', auth, upload.single('media'), async (req, res) => {
 
   let image_url = null
   if (req.file) {
-    image_url = `/uploads/${req.file.filename}`
+    image_url = req.file.path
   }
 
   try {

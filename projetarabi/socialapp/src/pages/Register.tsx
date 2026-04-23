@@ -38,11 +38,11 @@ export default function Register() {
       <div className="auth-card animate-in">
         <div className="auth-logo">
           <div className="logo-icon"><Zap size={22} fill="currentColor" /></div>
-          <span>Vibe</span>
+          <span>ATAY</span>
         </div>
 
         <div className="auth-header">
-          <h1>Join Vibe</h1>
+          <h1>Join ATAY</h1>
           <p>Create your account and start connecting</p>
         </div>
 

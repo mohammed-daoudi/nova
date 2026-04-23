@@ -89,10 +89,13 @@ export const profileAPI = {
     api('/profile/me/avatar', { method: 'PUT', body: formData }),
 }
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+export const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 export const avatarUrl = (user: { avatar_url?: string; avatar_seed?: string; username?: string }) => {
-  if (user?.avatar_url) return `${API_BASE}${user.avatar_url}`
+  if (user?.avatar_url) {
+    if (user.avatar_url.startsWith('http')) return user.avatar_url
+    return `${API_BASE}${user.avatar_url}`
+  }
   const seed = user?.avatar_seed || user?.username || 'default'
   return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=7c5cfc,fc5c9c,5cf0fc`
 }

@@ -63,7 +63,7 @@ router.put('/me/password', auth, async (req, res) => {
 router.put('/me/avatar', auth, upload.single('avatar'), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No image uploaded' })
   try {
-    const avatar_url = `/uploads/${req.file.filename}`
+    const avatar_url = req.file.path
     await pool.query('UPDATE users SET avatar_url = ? WHERE id = ?', [avatar_url, req.user.id])
     res.json({ avatar_url })
   } catch (err) {

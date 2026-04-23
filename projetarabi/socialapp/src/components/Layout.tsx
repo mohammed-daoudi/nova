@@ -28,7 +28,7 @@ export default function Layout() {
       <aside className="sidebar">
         <div className="sidebar-logo">
           <div className="logo-icon"><Zap size={20} fill="currentColor" /></div>
-          <span className="logo-text">Vibe</span>
+          <span className="logo-text">ATAY</span>
         </div>
 
         <nav className="sidebar-nav">

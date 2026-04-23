@@ -139,7 +139,7 @@ export default function Nova() {
                                 </div>
                             </div>
                             <h3>Hey, I'm Nova</h3>
-                            <p>Your AI companion on Vibe. Ask me anything or pick something below.</p>
+                            <p>Your AI companion on ATAY. Ask me anything or pick something below.</p>
                             <div className="nova-suggestions">
                                 {SUGGESTIONS.map((s) => (
                                     <button

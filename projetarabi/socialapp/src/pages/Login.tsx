@@ -36,7 +36,7 @@ export default function Login() {
       <div className="auth-card animate-in">
         <div className="auth-logo">
           <div className="logo-icon"><Zap size={22} fill="currentColor" /></div>
-          <span>Vibe</span>
+          <span>ATAY</span>
         </div>
 
         <div className="auth-header">
