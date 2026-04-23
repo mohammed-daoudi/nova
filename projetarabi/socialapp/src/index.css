@@ -55,11 +55,13 @@ html, body, #root {
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Poppins', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 15px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5 {

@@ -99,8 +99,15 @@ export default function Chat() {
 
     connect();
 
+    const keepAlive = setInterval(() => {
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({ type: 'ping' }))
+      }
+    }, 30000)
+
     return () => {
       if (reconnectionTimeout) clearTimeout(reconnectionTimeout);
+      clearInterval(keepAlive);
       socket?.close();
     };
     // Re-run if selected changes to ensure typing status works correctly
