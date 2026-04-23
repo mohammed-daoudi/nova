@@ -39,7 +39,10 @@ export default function Chat() {
 
   useEffect(() => {
     const token = getToken()
-    const socket = new WebSocket(`ws://localhost:5000/ws?token=${token}`)
+    const wsBase = import.meta.env.VITE_API_URL
+      ? import.meta.env.VITE_API_URL.replace('https://', 'wss://').replace('http://', 'ws://')
+      : 'ws://localhost:5000'
+    const socket = new WebSocket(`${wsBase}/ws?token=${token}`)
     ws.current = socket
     socket.onopen = () => setConnected(true)
     socket.onclose = () => setConnected(false)

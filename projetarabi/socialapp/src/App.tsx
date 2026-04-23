@@ -9,6 +9,7 @@ import ProfileView from './pages/ProfileView'
 import Settings from './pages/Settings'
 import Layout from './components/Layout'
 import Nova from './pages/Nova'
+import { getToken } from './api'
 
 function App() {
   return (
@@ -25,7 +26,8 @@ function App() {
           <Route path="/profile/:userId" element={<ProfileView />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route path="*" element={<Navigate to={getToken() ? "/home" : "/login"} replace />} />
       </Routes>
     </BrowserRouter>
   )
