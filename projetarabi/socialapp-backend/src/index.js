@@ -20,6 +20,7 @@ app.use('/api/posts', require('./routes/posts'))
 app.use('/api/messages', require('./routes/messages'))
 app.use('/api/profile', require('./routes/profile'))
 app.use('/api/nova', require('./routes/nova'))
+app.use('/api/notifications', require('./routes/notifications'))
 
 app.get('/api/health', (_, res) => res.json({ status: 'ok' }))
 

@@ -51,12 +51,42 @@ router.post('/', auth, upload.single('media'), async (req, res) => {
       'INSERT INTO posts (user_id, content, image_url) VALUES (?, ?, ?)',
       [req.user.id, content.trim(), image_url]
     )
+
+    const postId = result.insertId
+
+    // detect @mentions
+    const mentionRegex = /@(\w+)/g
+    let match
+    while ((match = mentionRegex.exec(content)) !== null) {
+      const username = match[1]
+      const [mentioned] = await pool.query(
+        `SELECT u.id FROM users u
+         JOIN friendships f ON (
+           (f.requester_id = ? AND f.receiver_id = u.id) OR
+           (f.receiver_id = ? AND f.requester_id = u.id)
+         )
+         WHERE u.username = ? AND f.status = 'accepted' AND u.id != ?`,
+        [req.user.id, req.user.id, username, req.user.id]
+      )
+      if (mentioned.length > 0) {
+        const mentionedUser = mentioned[0]
+        await pool.query(
+          'INSERT INTO mentions (post_id, user_id) VALUES (?, ?)',
+          [postId, mentionedUser.id]
+        )
+        await pool.query(
+          'INSERT INTO notifications (user_id, from_user_id, type, post_id, message) VALUES (?, ?, ?, ?, ?)',
+          [mentionedUser.id, req.user.id, 'mention', postId, `mentioned you in a post`]
+        )
+      }
+    }
+
     const [rows] = await pool.query(
       `SELECT p.id, p.content, p.image_url, p.created_at,
               u.id AS user_id, u.first_name, u.last_name, u.username, u.avatar_seed, u.avatar_url,
               0 AS likes_count, 0 AS comments_count, 0 AS liked_by_me
        FROM posts p JOIN users u ON u.id = p.user_id WHERE p.id = ?`,
-      [result.insertId]
+      [postId]
     )
     res.status(201).json(rows[0])
   } catch (err) {

@@ -91,6 +91,11 @@ export const profileAPI = {
     api('/profile/me/avatar', { method: 'PUT', body: formData }),
 }
 
+export const notificationsAPI = {
+  get: () => api('/notifications'),
+  markRead: () => api('/notifications/read', { method: 'PUT' }),
+}
+
 export const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 export const avatarUrl = (user: { avatar_url?: string; avatar_seed?: string; username?: string }) => {
