@@ -44,21 +44,12 @@ export default function Chat() {
     const connect = () => {
       const token = getToken();
       
-      // 1. Get the URL from env
-      const apiUrl = import.meta.env.VITE_API_URL;
-      
-      let wsBase;
-      if (apiUrl) {
-        // If we have an API URL (Production), convert https to wss
-        wsBase = apiUrl.replace(/^http/, 'ws');
-      } else {
-        // Fallback for local development only
-        wsBase = 'ws://localhost:5000';
-      }
-      
-      console.log(`Current VITE_API_URL: ${apiUrl}`); // Debug: see what Vercel thinks it is
-      console.log(`Attempting connection to: ${wsBase}/ws`);
-      
+      // Force the production URL directly to skip the "undefined" issue
+      const wsBase = 'wss://vibe-backend-aw33.onrender.com';
+
+      // Keep this log so you can see it working in the console
+      console.log("PROD CONNECTING TO:", wsBase);
+
       socket = new WebSocket(`${wsBase}/ws?token=${token}`);
       ws.current = socket;
 
